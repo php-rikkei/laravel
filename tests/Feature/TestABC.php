@@ -15,19 +15,23 @@ class TestABC extends TestCase {
      *
      * @return void
      */
-    public function testExample() {
+    public function testDatabaseExist() {
         $this->assertDatabaseHas('users', [
             'email' => 'nlbloc94@gmail.com'
         ]);
     }
-     public function testExample1() {
+     public function testDatabaseNotExist() {
         $this->assertDatabaseMissing('users', [
             'email' => 'nlbloc9423@gmail.com'
         ]);
     }
-     public function testExample2() {
+     public function testAccess() {
         $response = $this->get('/');
         $response->assertStatus(200);
+    }
+    public function testSession() {
+        $response = $this->withSession(['foo' => 'bar'])
+                         ->get('/');
     }
     
 

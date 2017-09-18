@@ -36,20 +36,20 @@
                         dataType: 'json',
                         data: {key: $key},
                         success:
-                            function (data) {
-                                data.forEach(function (item) {
-                                    $records = $records + " <li class='abc'><a> " + item.name_wallet + "</a> </li> ";
-                                    $('#search_list').html($records);
-                                })
-                                //console.log(data);
-                            }
+                                function (data) {
+                                    data.forEach(function (item) {
+                                        $records = $records + " <li class='abc'><a>ID:" + item.id + "Name:"+ item.name_wallet +  "</a> </li> ";
+                                        $('#search_list').html($records);
+                                    })
+                                    //console.log(data);
+                                }
 //            ,
 //                    error: function () {
 //                    alert("Fail");
 //                    }
                     })
                 } else {
-                    return $key = '';
+                    $('#search_list').html();
                 }
             }
 
@@ -84,6 +84,7 @@
                     </tr>
                 </tbody>	 
                 @endforeach
+             {{ $wallet->links() }}       
             </table>
             @if (session('response'))
             <div class="alert alert-success">

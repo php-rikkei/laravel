@@ -31,7 +31,8 @@ abstract class DuskTestCase extends BaseTestCase
     {
 
        return RemoteWebDriver::create(
-        'http://localhost:80', DesiredCapabilities::chrome()
+        'http://localhost/laravel/public', DesiredCapabilities::chrome()
+               
     );
     }
 }

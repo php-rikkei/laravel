@@ -15,8 +15,7 @@ class WalletController extends Controller {
 
     public function getManageWallet() {
         $id = Auth::user()->id;
-        $wallet = \DB::table('wallets')->where('id_user', $id)->get();
-
+        $wallet = \DB::table('wallets')->where('id_user', $id)->paginate(4);
         return view('ManageWallet', ['wallet' => $wallet]);
     }
 
@@ -37,7 +36,6 @@ class WalletController extends Controller {
     public function getEditWallet($id) {
         $rows = \DB::table('wallets')->where('id', $id)->get();
         return view('Wallet.Edit', ['rows' => $rows]);
-        //print_r($rows);
     }
 
     public function postEditWallet($id, Request $request) {
@@ -48,8 +46,6 @@ class WalletController extends Controller {
     }
 
     public function postDeleteWallet($id) {
-        /* \DB::table('wallets')->where('id',$id)->delete();
-          return redirect('/getManageWallet')->with('response','Bạn vừa xóa 1 Wallet'); */
         $delete = Wallet::findOrFail($id);
         $delete->delete();
         return redirect('/getManageWallet');
@@ -80,15 +76,10 @@ class WalletController extends Controller {
                 ->update(['money_wallet' => $money_to]);
         return redirect('/getManageWallet');
     }
-    
-    public function getSearchAuto(Request $request){
-        $row = \DB::table('wallets')->select('id','name_wallet')->where('name_wallet','like','%'.$request->key.'%')->get();
-//        $arr = array();
-//        foreach ($row as $abc){
-////        array_push($arr, "$abc->id","$abc->name_wallet");
-//        $arr[]= ['value'=>$abc->name_wallet,'id'=>$product->id];
-//        }
+
+    public function getSearchAuto(Request $request) {
+        $row = \DB::table('wallets')->select('id', 'name_wallet')->where('name_wallet', 'like', '%' . $request->key . '%')->get();
         return json_encode($row);
     }
-   
+
 }
