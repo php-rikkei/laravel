@@ -1,8 +1,7 @@
 @extends('Home')
 @section('content')
-<script src="https://unpkg.com/vue@2.4.3/dist/vue.js"></script>
-<script src="jquery-3.2.1.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>    
+
+
 <div class="container" >
     <div class="panel-body">
         <span>Add New Wallet:   </span>
@@ -15,9 +14,45 @@
                 Search:   
             </span>
             <input type="text" id="search" placeholder="Search name wallet" onkeyup="searchAutomation()" style="width: 60%"  >
+            <ul id="search_list"style="w" >
+
+            </ul>
         </div>
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
+
         <script>
-            $key = $('#search').val();
+            function searchAutomation() {
+                $key = $('#search').val();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                if ($key != '') {
+                    var $records = '';
+                    $.ajax({
+                        type: 'GET',
+                        url: 'api/getSearchAuto',
+                        dataType: 'json',
+                        data: {key: $key},
+                        success:
+                            function (data) {
+                                data.forEach(function (item) {
+                                    $records = $records + " <li class='abc'><a> " + item.name_wallet + "</a> </li> ";
+                                    $('#search_list').html($records);
+                                })
+                                //console.log(data);
+                            }
+//            ,
+//                    error: function () {
+//                    alert("Fail");
+//                    }
+                    })
+                } else {
+                    return $key = '';
+                }
+            }
+
         </script>
         <div class="tableData" style="margin-top: 20px">
             <table style=" width:100% ; " id="table">

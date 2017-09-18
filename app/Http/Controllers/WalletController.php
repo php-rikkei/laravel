@@ -80,5 +80,15 @@ class WalletController extends Controller {
                 ->update(['money_wallet' => $money_to]);
         return redirect('/getManageWallet');
     }
-
+    
+    public function getSearchAuto(Request $request){
+        $row = \DB::table('wallets')->select('id','name_wallet')->where('name_wallet','like','%'.$request->key.'%')->get();
+//        $arr = array();
+//        foreach ($row as $abc){
+////        array_push($arr, "$abc->id","$abc->name_wallet");
+//        $arr[]= ['value'=>$abc->name_wallet,'id'=>$product->id];
+//        }
+        return json_encode($row);
+    }
+   
 }
