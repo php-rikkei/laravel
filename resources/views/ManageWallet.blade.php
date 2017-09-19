@@ -4,6 +4,14 @@
 
 <div class="container" >
     <div class="panel-body">
+
+        <div class="col-lg-12">
+            @if(Session::has('flash_message'))
+            <div class="alert alert-{{ Session::get('flash_level') }}">
+                <b>{{ Session::get('flash_message') }}</b>
+            </div>
+            @endif
+        </div>  
         <span>Add New Wallet:   </span>
         <a href="{{url('/getAddWallet')}}">Add</a>
         <br>
@@ -11,10 +19,10 @@
         <a href="{{url('/getTransferWallet')}}">Transfer</a>
         <div class="search-auto" style="margin-top: 20px">
             <span> 
-                Search:   
+                Search Name:   
             </span>
             <input type="text" id="search" placeholder="Search name wallet" onkeyup="searchAutomation()" style="width: 60%"  >
-            <ul id="search_list"style="w" >
+            <ul id="list-group">
 
             </ul>
         </div>
@@ -38,8 +46,8 @@
                         success:
                                 function (data) {
                                     data.forEach(function (item) {
-                                        $records = $records + " <li class='abc'><a>ID:" + item.id + "Name:"+ item.name_wallet +  "</a> </li> ";
-                                        $('#search_list').html($records);
+                                        $records = $records + " <li class='list-group-item list-group-item-info'><a>" + item.name_wallet + "</a> </li> ";
+                                        $('#list-group').html($records);
                                     })
                                     //console.log(data);
                                 }
@@ -49,7 +57,7 @@
 //                    }
                     })
                 } else {
-                    $('#search_list').html();
+                    $('#list-group').html();
                 }
             }
 
@@ -84,7 +92,7 @@
                     </tr>
                 </tbody>	 
                 @endforeach
-             {{ $wallet->links() }}       
+                {{ $wallet->links() }}       
             </table>
             @if (session('response'))
             <div class="alert alert-success">

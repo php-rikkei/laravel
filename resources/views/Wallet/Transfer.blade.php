@@ -9,10 +9,10 @@
                 Choice Wallet Want Transfer:
             </span>
 
-            <select name="send">
+            <select name="send" onchange="Change()" id="send-value">
                 <option value="0"> --Choice wallet-- </option>
                 @foreach($wallet as $row)
-                <option value="{{ $row->id }}">
+                <option value="{{ $row->id }}" >
                     Name Wallet: {{ $row->name_wallet }}--Money:{{ $row->money_wallet }} vnđ
                 </option>
 
@@ -28,7 +28,7 @@
             <select name="to">
                 <option value="0"> --Choice wallet-- </option>
                 @foreach($wallet as $row)
-                <option value="{{ $row->id }}">
+                <option value="{{ $row->id }}" id="to-value">
                     Name Wallet:{{ $row->name_wallet }}--Money:{{ $row->money_wallet }}vnđ
                 </option>
                 @endforeach
@@ -44,5 +44,11 @@
         <button type="submit" name="bnt-tt">Transfer</button>
     </form>
 </div>
+<script>
+    function Change(){
+    var k = $('#send-value').val();
+    $('#to-value').val('k').hide();
+    }
+</script>
 
 @endsection
