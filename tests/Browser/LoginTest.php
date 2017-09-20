@@ -17,13 +17,13 @@ class LoginTest extends DuskTestCase {
 
         $this->browse(function ($first) {
             $first->loginAs(User::find(1))
-                    ->visit('/Login')
+                    ->visit('/login')
                     ->value('#email', 'locnbl@gmail.com')
                     ->value('#password', '123123')
                     ->press('submit')
                     ->assertPathIs('/home');
         });
-        $this->browse(function ($first, $second) {
+        $this->browse(function ($first, $second) {  
             $first->loginAs(User::find(1))
                     ->visit('/home');
         });

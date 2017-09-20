@@ -16,8 +16,7 @@ class WalletController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function getManageWallet() {
-        $id = Auth::user()->id;
-        $wallet = \DB::table('wallets')->where('id_user', $id)->paginate(4);
+        $wallet = Wallet::getAllWallet();
         return view('ManageWallet', ['wallet' => $wallet]);
     }
 
@@ -37,12 +36,11 @@ class WalletController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function postAddWallet(Request $request) {
-        $wallet = new Wallet;
-        $wallet->name_wallet = $request->input('nameWallet');
-        $wallet->money_wallet = $request->input('priceWallet');
-        $id = Auth::user()->id;
-        $wallet->id_user = $id;
-        $wallet->save();
+        
+        $data =['name_wallet'=>$request->nameWallet,
+                'money_wallet'=>$request->priceWallet,
+                'id_user'=> Auth::user()->id ];
+        Wallet::insertWallet($data);
         return redirect('/getManageWallet')->with([
                     'flash_message' => \Message::INSERT_SUCCESS
         ]);
@@ -55,7 +53,7 @@ class WalletController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function getEditWallet($id) {
-        $rows = \DB::table('wallets')->where('id', $id)->get();
+        $rows = Wallet::getWalletByID($id);
         return view('Wallet.Edit', ['rows' => $rows]);
     }
 
@@ -66,9 +64,10 @@ class WalletController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function postEditWallet($id, Request $request) {
-        \DB::table('wallets')
-                ->where('id', $id)
-                ->update(['name_wallet' => $request->input('nameWallet'), 'money_wallet' => $request->input('priceWallet')]);
+        $data=['name_wallet'=>$request->nameWallet,
+               'money_wallet'=>$request->priceWallet,
+                'id'=>$id];
+        Wallet::updateWallet($data);
         return redirect('/getManageWallet')->with([
                     'flash_message' => \Message::UPDATE_SUCCESS
         ]);
@@ -81,8 +80,7 @@ class WalletController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function postDeleteWallet($id) {
-        $delete = Wallet::findOrFail($id);
-        $delete->delete();
+        Wallet::deleteWallet($id);
         return redirect('/getManageWallet')->with([
                     'flash_message' => \Message::DELETE_SUCCESS
         ]);
@@ -94,7 +92,7 @@ class WalletController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function getTransferWallet() {
-        $wallet = \DB::table('wallets')->get();
+        $wallet = Wallet::getAllWalletTransfer();
         return view('Wallet.Transfer', ['wallet' => $wallet]);
     }
 
@@ -134,8 +132,30 @@ class WalletController extends Controller {
      * @return Json 
      */
     public function getSearchAuto(Request $request) {
-        $row = \DB::table('wallets')->select('id', 'name_wallet')->where('name_wallet', 'like', '%' . $request->key . '%')->get();
+        $data=['request'=>$request->key];
+        $row = Wallet::mappingKey($data);
         return json_encode($row);
     }
-
+    
+     /**
+     * Accessed the return Json action wallet.
+     *
+     * @param  $request
+     * @return Json 
+     */
+    public function getShowDetail($id){
+        $wallet = Wallet::getWalletByID($id);
+        return view('Wallet.Detail',['wallet'=>$wallet]);
+    }
+    /**
+     * Accessed the comfirm search action wallet.
+     *
+     * @param  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getSearch(Request $request){
+        $data=['request'=>$request->search];
+        $wallet = Wallet::mappingKey($data);
+        return view('Wallet.Search',['wallet'=>$wallet]);
+    }
 }

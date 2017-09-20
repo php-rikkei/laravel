@@ -12,10 +12,10 @@
 
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-        <link href="{{asset('css/stype.css')}}" rel="stylesheet">
+        @yield('css')
 
     </head>
-    <body>
+    <body onload="startTime()">
         <div id="app">
             <nav class="navbar navbar-default navbar-static-top">
                 <div class="container">
@@ -74,8 +74,13 @@
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="{{ url('getEditUser') }} ">
+                                        <a href="{{ url('getEditUser/'.Auth::user()->id) }} ">
                                             Edit User
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ url('getResetPassword') }}">
+                                            
                                         </a>
                                     </li>
                                     <li>
@@ -92,6 +97,9 @@
 
                                 </ul>
                             </li>
+                            <li>
+                                <div id="txt" style="margin-top: 10px; margin-left: 10px"></div>
+                            </li>
                             @endguest
                         </ul>
                     </div>
@@ -103,5 +111,22 @@
   
             <!-- Scripts -->
             <script src="{{ asset('js/app.js') }}"></script>
+            <script>
+               function startTime() {
+               var today = new Date();
+               var h = today.getHours();
+               var m = today.getMinutes();
+               var s = today.getSeconds();
+               m = checkTime(m);
+               s = checkTime(s);
+               document.getElementById('txt').innerHTML =
+               h + ":" + m + ":" + s;
+               var t = setTimeout(startTime, 500);
+                }
+               function checkTime(i) {
+                    if (i < 10) {i = "0" + i}; 
+                    return i;
+                }
+</script>
     </body>
 </html>

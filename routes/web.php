@@ -37,3 +37,10 @@ Route::get('postDeleteWallet/{id}','WalletController@postDeleteWallet');
 
 Route::get('getTransferWallet','WalletController@getTransferWallet');
 Route::post('postTransferWallet','WalletController@postTransferWallet');
+
+Route::get('getEditUser/{id}','UserController@getEditUser');
+Route::post('postEditUser/{id}','UserController@postEditUser');
+
+Route::get('getShowDetail/{id}','WalletController@getShowDetail');
+
+Route::post('getSearch','WalletController@getSearch');
