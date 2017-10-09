@@ -47,7 +47,7 @@
                             </li>
 
                             <li>
-                                <a href="{{ url('getManageWallet') }}">
+                                <a href="{{ url('getManageRevenue') }}">
                                     Manage Revenue
                                 </a>
                             </li>

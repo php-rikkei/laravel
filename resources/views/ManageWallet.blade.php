@@ -19,6 +19,7 @@
         margin: 2px 2px 2px 2px;
         background: #fff;
         padding: 5px;
+    }
     </style>
     @endsection
 

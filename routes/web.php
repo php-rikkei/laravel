@@ -43,4 +43,6 @@ Route::post('postEditUser/{id}','UserController@postEditUser');
 
 Route::get('getShowDetail/{id}','WalletController@getShowDetail');
 
+Route::get('getManageRevenue','RevenueController@getManageRevenue');
+
 Route::post('getSearch','WalletController@getSearch');
